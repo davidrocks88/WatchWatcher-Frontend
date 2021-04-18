@@ -55,3 +55,15 @@ button {
   display: flex;
   align-content: center;
 }
+
+.card {
+  min-width: 20em;
+  min-height: 20em;
+}
+
+.cardImage {
+  height: 15em;
+  object-fit: cover;
+  padding: 0;
+  margin: 0;
+}
