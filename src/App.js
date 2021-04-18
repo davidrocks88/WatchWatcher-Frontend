@@ -65,7 +65,7 @@ function App() {
         <p>{`${currentTime.toDateString()} ${currentTime.toTimeString()} ${currentTime.getMilliseconds()}`}</p>
 
         <button onClick={() => setShowWebcam(!showWebcam)}>Record Time</button>
-        {showWebcam && <WebcamCapture stopWebcam={()=>setShowWebcam(false)} />}
+        {showWebcam && <WebcamCapture getCurrentTime={()=>currentTime} stopWebcam={()=>setShowWebcam(false)} />}
     </div>
   );
 }
