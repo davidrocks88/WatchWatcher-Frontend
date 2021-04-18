@@ -50,3 +50,8 @@ button {
   width: 10vmin;
   margin: 1vmin;
 }
+
+.webcam {
+  display: flex;
+  align-content: center;
+}

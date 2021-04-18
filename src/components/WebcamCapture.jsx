@@ -15,10 +15,11 @@ const WebcamCapture = ({getCurrentTime,stopWebcam}) => {
             imageSrc,
             time: getCurrentTime()
         });
+        stopWebcam()
     }, [webcamRef, setImgSrc]);
 
     return (
-        <>
+        <div className='webcam'>
             <Webcam
                 audio={false}
                 ref={webcamRef}
@@ -34,7 +35,7 @@ const WebcamCapture = ({getCurrentTime,stopWebcam}) => {
                     <p>{`${imgSrc.time.toDateString()} ${imgSrc.time.toTimeString()} ${imgSrc.time.getMilliseconds()}`}</p>
                 </>
             )}
-        </>
+        </div>
     );
 };
 
