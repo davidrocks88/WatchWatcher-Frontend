@@ -4,6 +4,7 @@ import './App.css';
 import {useState, useEffect} from "react";
 import Clock from 'react-clock';
 import 'react-clock/dist/Clock.css';
+import WebcamCapture from "./components/WebcamCapture";
 
 require('dotenv').config()
 
@@ -41,6 +42,7 @@ function App() {
   // }
 
     const [currentTime, setValue] = useState(new Date());
+    const [showWebcam, setShowWebcam] = useState(false)
 
     useEffect(() => {
         const interval = setInterval(
@@ -62,8 +64,8 @@ function App() {
         <Clock value={currentTime} />
         <p>{`${currentTime.toDateString()} ${currentTime.toTimeString()} ${currentTime.getMilliseconds()}`}</p>
 
-        <button>Record Time</button>
-
+        <button onClick={() => setShowWebcam(!showWebcam)}>Record Time</button>
+        {showWebcam && <WebcamCapture stopWebcam={()=>setShowWebcam(false)} />}
     </div>
   );
 }
