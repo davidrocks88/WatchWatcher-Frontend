@@ -34,7 +34,6 @@ const WebcamCapture = ({firebase, getCurrentTime,stopWebcam}) => {
         mountainsRef.putString(imgSrc.imageSrc, 'data_url').then((snapshot) => {
             console.log('Uploaded a blob or file!');
         });
-
     }
 
     return (

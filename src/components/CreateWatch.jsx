@@ -1,12 +1,26 @@
 import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import 'firebase/storage';  // <----
+import 'firebase/firestore'
 
 import { useFormik } from 'formik';
 import {useState} from "react";
+import { v4 as uuidv4 } from 'uuid';
+
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1)
 }
+
+const config = {
+    apiKey: process.env.REACT_APP_apiKey,
+    authDomain: process.env.REACT_APP_authDomain,
+    projectId: process.env.REACT_APP_projectId,
+    storageBucket: process.env.REACT_APP_storageBucket,
+    messagingSenderId: process.env.REACT_APP_messagingSenderId,
+    appId: process.env.REACT_APP_appId
+}
+
 
 const Thumbnail = ({file}) => {
 
@@ -40,18 +54,55 @@ const Thumbnail = ({file}) => {
 
 }
 
-const CreateWatch = () => {
+const CreateWatch = ({firebase, userId}) => {
     const textFields = ["name", "model", "year", "notes"]
 
     const [image, setImage] = useState()
+    const [imageUUID] = useState(uuidv4())
 
+    const upload = () => {
+        // Create a root reference
+        console.log("Uploading")
+
+        var storageRef = firebase.storage().ref();
+        var imageRef = storageRef.child(`images/${imageUUID}`);
+
+
+        // 'file' comes from the Blob or File API
+        console.log("Uploading")
+        console.log(image.imageSrc)
+        imageRef.put(image).then((snapshot) => {
+            alert('Uploaded a blob or file!');
+        });
+    }
 
     const formik = useFormik({
         initialValues: {
+            // eslint-disable-next-line no-sequences
             ...textFields.reduce((acc,curr)=> (acc[curr]='', acc),{}),
         },
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            const db = firebase.firestore();
+            console.log({
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+                createdBy: userId,
+                ...values,
+                imageId: imageUUID
+            })
+
+            db.collection('watches')
+                .add({
+                    created: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdBy: userId,
+                    ...values,
+                    imageId: imageUUID
+                });
+
+
+            // runMutation({
+            //     ...values,
+            //     imageId: imageUUID
+            // })
         },
     });
 
@@ -98,6 +149,11 @@ const CreateWatch = () => {
                 <Button color="primary" variant="contained" fullWidth type="submit">
                     Submit
                 </Button>
+
+                <Button color="primary" variant="contained" fullWidth onClick={()=>upload()}>
+                    Upload
+                </Button>
+
             </form>
         </div>
     )

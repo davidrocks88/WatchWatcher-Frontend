@@ -9,6 +9,8 @@ import Clock from 'react-clock';
 import 'react-clock/dist/Clock.css';
 import WebcamCapture from "./components/WebcamCapture";
 import {FirebaseAuthConsumer, FirebaseAuthProvider, IfFirebaseAuthed, IfFirebaseAuthedAnd} from "@react-firebase/auth";
+import { FirebaseDatabaseMutation } from "@react-firebase/database";
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -101,7 +103,15 @@ function App() {
 
                 <Switch>
                     <Route exact path="/watches/create">
-                        <CreateWatch />
+
+                        <FirebaseAuthConsumer>
+                            {({ user, isSignedIn }) => {
+                                return (
+                                    isSignedIn && <CreateWatch userId={user.uid} firebase={firebase} />
+                                );
+                            }}
+
+                        </FirebaseAuthConsumer>
                     </Route>
                     <Route exact path="/watches">
                         <Watches />
