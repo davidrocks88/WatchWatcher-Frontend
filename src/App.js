@@ -18,6 +18,15 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {AccountCircle} from "@material-ui/icons";
 import {Menu, MenuItem} from "@material-ui/core";
 import Watches from "./components/Watches";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useRouteMatch,
+    useParams
+} from "react-router-dom";
+import CreateWatch from "./components/CreateWatch";
 require('dotenv').config()
 
 const config = {
@@ -87,9 +96,19 @@ function App() {
 
                 </FirebaseAuthConsumer>
             </div>
-            <div className="App">
-                <Watches />
-            </div>
+            <Router>
+                <div className="App">
+
+                <Switch>
+                    <Route exact path="/watches/create">
+                        <CreateWatch />
+                    </Route>
+                    <Route exact path="/watches">
+                        <Watches />
+                    </Route>
+                </Switch>
+                </div>
+            </Router>
         </FirebaseAuthProvider>
 
     );

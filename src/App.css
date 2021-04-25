@@ -67,3 +67,7 @@ button {
   padding: 0;
   margin: 0;
 }
+
+.createWatchForm .entry {
+  margin: 1em
+}
